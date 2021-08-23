@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        
+        {
+            "name": "Python: Run Project",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "preLaunchTask": "pip_list"
+        }
+    ]
+}

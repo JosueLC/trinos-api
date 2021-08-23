@@ -1,0 +1,4 @@
+Package    Version
+---------- -------
+pip        21.0.1
+setuptools 53.0.0
