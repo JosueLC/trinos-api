@@ -1,5 +1,6 @@
 #Python packages
 from typing import List
+import json
 
 #FastAPI packages
 from fastapi import APIRouter
@@ -18,7 +19,11 @@ router = APIRouter()
     summary="Sign up a new user",
     tags=["User"]
 )
-def signup():
+def signup(
+    user: UserFull = Body(
+        ...,
+    )
+):
     """
     Sign up a new user
 
@@ -38,6 +43,15 @@ def signup():
         - birth_date: User's birth date (date)'
 
     """
+    with open("data/users.json", "r+", encoding="utf-8") as f:
+        users = json.load(f)
+        user_dict = user.dict()
+        user_dict["id"] = str(user_dict["id"])
+        user_dict["birth_date"] = str(user_dict["birth_date"])
+        users.append(user_dict)
+        f.seek(0)
+        json.dump(users, f, indent=4)
+        f.truncate()
     return user
 
 @router.post(
