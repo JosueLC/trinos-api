@@ -44,3 +44,5 @@ class User(UserBase):
         default=None,
         title="Birth Date"
         )
+class UserFull(User, UserLogin):
+    pass
