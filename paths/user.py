@@ -71,8 +71,25 @@ async def login(user: User):
     summary="Get all users",
     tags=["User"]
 )
-async def get_users():
-    pass
+def get_users():
+    """
+    Get all users
+
+    This endpoint will return a list of all users.
+
+    Returns
+    A json object with the user's information:
+        - id: User's id (UUID)
+        - username: User's username (str)
+        - email: User's email (EmailStr)
+        - first_name: User's first name (str)
+        - last_name: User's last name (str)
+        - birth_date: User's birth date (date)'
+
+    """
+    with open("data/users.json", "r", encoding="utf-8") as f:
+        users = json.load(f)
+    return users
 
 @router.get(
     path="/users/{user_id}",
