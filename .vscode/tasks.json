@@ -6,7 +6,12 @@
         {
             "label": "pip_list",
             "type": "shell",
-            "command": "./venv/bin/pip list > requirements.txt"
+            "command": "./.venv/bin/pip freeze > requirements.txt"
+        },
+        {
+            "label": "pip_install",
+            "type": "shell",
+            "command": "./.venv/bin/pip install -r requirements.txt"
         }
     ]
 }

@@ -1,13 +1,15 @@
 {
     "configurations": [
-        
         {
-            "name": "Python: Run Project",
+            "name": "Python: FastAPI",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
-            "console": "integratedTerminal",
-            "preLaunchTask": "pip_list"
+            "module": "uvicorn",
+            "args": [
+                "main:app",
+                "--reload"
+            ],
+            "jinja": true
         }
     ]
 }
