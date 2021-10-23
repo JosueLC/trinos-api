@@ -6,7 +6,7 @@ from uuid import UUID
 from pydantic import BaseModel
 from pydantic import Field
 #Local packages
-from models.user import User
+from models.user import UserBase
 
 #Classes for Trino Model
 class Trino(BaseModel):
@@ -20,13 +20,13 @@ class Trino(BaseModel):
         min_length=1,
         max_length=256
         )
-    create_at: datetime = Field(
+    created_at: datetime = Field(
         default=datetime.now(),
     )
-    update_at: Optional[datetime] = Field(
+    updated_at: Optional[datetime] = Field(
         default=datetime.now(),
     )
-    by: User = Field(
+    by: UserBase = Field(
         ...,
         title="User who created the trino"
         )

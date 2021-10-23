@@ -1,5 +1,6 @@
 #Python packages
 from typing import List
+import json
 
 #FastAPI packages
 from fastapi import APIRouter
@@ -28,9 +29,17 @@ def home():
     None
 
     Returns:
-    Dictionary with the message "Working!".
+    A json object with all trinos with this structure:
+    
+        - id: UUID
+        - content: String
+        - created_at: DateTime
+        - updated_at: DateTime
+        - by: UserBase (id, username, email)
     """
-    return list()
+    with open("data/trinos.json", "r", encoding="utf-8") as f:
+        trinos = json.load(f)
+    return trinos
 
 @router.get(
     path="/trino/{trino_id}",
@@ -50,7 +59,30 @@ def get_trino(trino_id: int):
     tags=["Trino"]
     )
 def post_trino(trino: Trino):
-    pass
+    """
+    Post a trino
+
+    This endpoint post a trino.
+
+    Parameters:
+    trino: Trino object
+
+    Returns:
+    Dictionary with the trino.
+    """
+    with open("data/trinos.json", "r+", encoding="utf-8") as f:
+        trinos = json.load(f)
+        trino_dict = trino.dict()
+        trino_dict["id"] = str(trino_dict["id"])
+        trino_dict["created_at"] = str(trino_dict["created_at"])
+        trino_dict["updated_at"] = str(trino_dict["updated_at"])
+        trino_dict["by"]["id"] = str(trino_dict["by"]["id"])
+        trinos.append(trino_dict)
+        f.seek(0)
+        json.dump(trinos, f, indent=4)
+        f.truncate()
+    return trino
+
 
 @router.put(
     path="/trino/{trino_id}",
