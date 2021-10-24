@@ -5,3 +5,6 @@
 __pycache__
 *.pyc
 
+#Test information
+data/users.json
+data/trinos.json
