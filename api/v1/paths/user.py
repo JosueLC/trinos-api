@@ -9,11 +9,11 @@ from fastapi import Body
 from fastapi.param_functions import Query
 
 #Local packages
-from models.user import User, UserFull
+from schemas.user import User, UserFull
 
 router = APIRouter()
 
-DATAUSER_PATH = "data/users.json"
+DATAUSER_PATH = "../../data/users.json"
 
 @router.post(
     path="/signup",

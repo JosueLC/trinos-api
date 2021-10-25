@@ -7,10 +7,9 @@ from fastapi import FastAPI
 from fastapi import status
 
 #Local packages
-from paths import user, trino
+from api import api
 
 app = FastAPI()
 
 #Includes the paths from paths folder
-app.include_router(user.router)
-app.include_router(trino.router)
+app.include_router(api.router)

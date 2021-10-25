@@ -7,9 +7,11 @@ from fastapi import APIRouter
 from fastapi import status
 
 #Local packages
-from models.trino import Trino
+from schemas.trino import Trino
 
 router = APIRouter()
+
+DATATRINO_PATH = "../../data/trinos.json"
 
 #Path operations to home page
 @router.get(
@@ -37,7 +39,7 @@ def home():
         - updated_at: DateTime
         - by: UserBase (id, username, email)
     """
-    with open("data/trinos.json", "r", encoding="utf-8") as f:
+    with open(DATATRINO_PATH, "r", encoding="utf-8") as f:
         trinos = json.load(f)
     return trinos
 
