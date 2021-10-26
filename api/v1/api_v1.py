@@ -7,7 +7,7 @@ from fastapi import APIRouter
 from fastapi import status
 
 #Local packages
-from paths import user, trino
+from .paths import user, trino
 
 router = APIRouter(
     prefix="/v1",

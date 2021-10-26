@@ -6,7 +6,7 @@ from uuid import UUID
 from pydantic import BaseModel
 from pydantic import Field
 #Local packages
-from models.user import UserBase
+from .user import UserBase
 
 #Classes for Trino Model
 class Trino(BaseModel):

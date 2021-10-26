@@ -7,7 +7,7 @@ from fastapi import APIRouter
 from fastapi import status
 
 #Local packages
-from v1 import api_v1
+from .v1 import api_v1
 
 router = APIRouter(
     prefix="/api",

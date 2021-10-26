@@ -9,7 +9,7 @@ from fastapi import Body
 from fastapi.param_functions import Query
 
 #Local packages
-from schemas.user import User, UserFull
+from ..schemas.user import User, UserFull
 
 router = APIRouter()
 

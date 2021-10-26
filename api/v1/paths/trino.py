@@ -1,5 +1,5 @@
 #Python packages
-from typing import List
+from typing import List, Dict
 import json
 
 #FastAPI packages
@@ -7,16 +7,17 @@ from fastapi import APIRouter
 from fastapi import status
 
 #Local packages
-from schemas.trino import Trino
+from ..schemas.trino import Trino
+from ...data.data_storage_service import DataStorageService
 
 router = APIRouter()
 
-DATATRINO_PATH = "../../data/trinos.json"
+dss = DataStorageService("trinos")
 
 #Path operations to home page
 @router.get(
     path="/",
-    response_model=List[Trino],
+    response_model=Dict[str,Trino],
     status_code=status.HTTP_200_OK,
     summary="Get all trinos",
     tags=["Home","Trino"]
@@ -39,8 +40,7 @@ def home():
         - updated_at: DateTime
         - by: UserBase (id, username, email)
     """
-    with open(DATATRINO_PATH, "r", encoding="utf-8") as f:
-        trinos = json.load(f)
+    trinos = dss.data_storage_dictionary
     return trinos
 
 @router.get(
@@ -51,7 +51,7 @@ def home():
     tags=["Trino"]
     )
 def get_trino(trino_id: int):
-    pass
+    return dss.get_data_storage_dictionary_element(trino_id)
 
 @router.post(
     path="/trino",
@@ -72,19 +72,14 @@ def post_trino(trino: Trino):
     Returns:
     Dictionary with the trino.
     """
-    with open("data/trinos.json", "r+", encoding="utf-8") as f:
-        trinos = json.load(f)
-        trino_dict = trino.dict()
-        trino_dict["id"] = str(trino_dict["id"])
-        trino_dict["created_at"] = str(trino_dict["created_at"])
-        trino_dict["updated_at"] = str(trino_dict["updated_at"])
-        trino_dict["by"]["id"] = str(trino_dict["by"]["id"])
-        trinos.append(trino_dict)
-        f.seek(0)
-        json.dump(trinos, f, indent=4)
-        f.truncate()
-    return trino
 
+    trino_dict = trino.dict()
+    trino_dict["id"] = str(trino_dict["id"])
+    trino_dict["created_at"] = str(trino_dict["created_at"])
+    trino_dict["updated_at"] = str(trino_dict["updated_at"])
+    trino_dict["by"]["id"] = str(trino_dict["by"]["id"])
+    dss.add_data_storage_dictionary_element(str(trino.id),trino_dict)
+    return trino
 
 @router.put(
     path="/trino/{trino_id}",
