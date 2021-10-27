@@ -1,5 +1,6 @@
 #Python packages
-from typing import List
+from typing import Dict
+from uuid import UUID
 import json
 
 #FastAPI packages
@@ -10,10 +11,10 @@ from fastapi.param_functions import Query
 
 #Local packages
 from ..schemas.user import User, UserFull
+from ...data.data_storage_service import DataStorageService
 
 router = APIRouter()
-
-DATAUSER_PATH = "../../data/users.json"
+dds = DataStorageService("users")
 
 @router.post(
     path="/signup",
@@ -46,16 +47,25 @@ def signup(
         - birth_date: User's birth date (date)'
 
     """
-    with open(DATAUSER_PATH, "r+", encoding="utf-8") as f:
-        users = json.load(f)
+    #Check if the user already exists
+    users = dds.get_data_storage_dictionary_elements(["username"])
+    if user.username in users:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="User already exists"
+        )
+    else:
         user_dict = user.dict()
-        user_dict["id"] = str(user_dict["id"])
+        #Generate a new id
+        user_dict["id"] = dds.generate_id()
         user_dict["birth_date"] = str(user_dict["birth_date"])
-        users.append(user_dict)
-        f.seek(0)
-        json.dump(users, f, indent=4)
-        f.truncate()
-    return user
+        if dds.add_data_storage_dictionary_element(user_dict["id"],user_dict):
+            return User(**user_dict)
+        else:
+            if dds.status == 4:
+                raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Server error")
+            else:
+                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User ID already exists")
 
 @router.post(
     path="/login",
@@ -91,27 +101,27 @@ def login(
         - HTTP Error 401 if user is found but password does not match.
         - HTTP Error 404 if user is not found.
     """
-    with open(DATAUSER_PATH,"r",encoding="utf-8") as f:
-        users = json.load(f)
-        for user in users:
-            if user["username"] == username:
-                if user["password"] == password:
-                    response = User(**user)
-                    return response
-                else:
-                    raise HTTPException(
-                        status_code=status.HTTP_401_UNAUTHORIZED,
-                        detail="Invalid password."
-                    )
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail= "User not found"
-        )
+    users = dds.get_data_storage_dictionary_elements(["id","username","password"])
+    for user in users:
+        if user["username"] == username:
+            if user["password"] == password:
+                user_dict = dds.get_data_storage_dictionary_element(user["id"])
+                response = User(**user_dict)
+                return response
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Invalid password."
+                )
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail= "User not found"
+    )
     
 
 @router.get(
     path="/users",
-    response_model=List[User],
+    response_model=Dict[str,User],
     status_code=status.HTTP_200_OK,
     summary="Get all users",
     tags=["User"]
@@ -132,8 +142,7 @@ def get_users():
         - birth_date: User's birth date (date)'
 
     """
-    with open(DATAUSER_PATH, "r", encoding="utf-8") as f:
-        users = json.load(f)
+    users = dds.get_data_storage_dictionary()
     return users
 
 @router.get(
@@ -170,16 +179,16 @@ def get_user(
         - birth_date: User's birth date (date)'
 
     """
-    with open(DATAUSER_PATH,"r",encoding="utf-8") as f:
-        users = json.load(f)
-        for user in users:
-            if user["username"] == username:
-                response = User(**user)
-                return response
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail= "User not found"
-        )
+    users = dds.get_data_storage_dictionary_elements(["id","username"])
+    for user in users:
+        if user["username"] == username:
+            user_dict = dds.get_data_storage_dictionary_element(user["id"])
+            response = User(**user_dict)
+            return response
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail= "User not found"
+    )
 
 @router.put(
     path="/users/{username}",
@@ -220,22 +229,24 @@ def update_user(
         - birth_date: User's birth date (date)'
 
     """
-    with open(DATAUSER_PATH, "r+", encoding="utf-8") as f:
-        users = json.load(f)
-        for user in users:
-            if user["username"] == username:
-                user_dict = user_updated.dict()
-                user_dict["id"] = str(user_dict["id"])
-                user_dict["birth_date"] = str(user_dict["birth_date"])
-                users[users.index(user)] = user_dict
-                f.seek(0)
-                json.dump(users, f, indent=4)
-                f.truncate()
-                return user_dict
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail= "User not found"
-        )
+    users = dds.get_data_storage_dictionary_elements(["id","username"])
+    for user in users:
+        if user["username"] == username:
+            user_dict = user_updated.dict()
+            user_dict["id"] = str(user_dict["id"])
+            user_dict["birth_date"] = str(user_dict["birth_date"])
+            if dds.set_data_storage_dictionary_element(user["id"],user_dict):
+                response = User(**user_dict)
+                return response
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Server error"
+                )
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail= "User not found"
+    )
 
 @router.delete(
     path="/users/{username}",
@@ -263,16 +274,17 @@ def delete_user(
     A dictionary with the following keys:
     {"user": username, "status":"deleted"}
     """
-    with open(DATAUSER_PATH, "r+", encoding="utf-8") as f:
-        users = json.load(f)
-        for user in users:
-            if user["username"] == username:
-                del users[users.index(user)]
-                f.seek(0)
-                json.dump(users, f, indent=4)
-                f.truncate()
-                return {"username":user["username"], "status":"deleted"}
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail= "User not found"
-        )
+    users = dds.get_data_storage_dictionary_elements(["id","username"])
+    for user in users:
+        if user["username"] == username:
+            if dds.delete_data_storage_dictionary_element(user["id"]):
+                return {"user": username, "status":"deleted"}
+            else:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Server error"
+                )
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail= "User not found"
+    )
