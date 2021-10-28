@@ -1,0 +1,17 @@
+//VSCode configuration for serve angular application
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Angular Application",
+      "program": "${workspaceRoot}/dist/server/server.js",
+      "stopOnEntry": false,
+      "args": [
+        "${workspaceRoot}/dist/server/server.js"
+      ],
+      "preLaunchTask": "build:dev"
+    }
+  ]
+}

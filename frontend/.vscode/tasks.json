@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "trinos-app/",
+			"problemMatcher": [],
+			"label": "npm: start - trinos-app",
+			"detail": "ng serve",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
