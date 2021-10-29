@@ -13,11 +13,13 @@ export class TrinosComponent implements OnInit {
 
   constructor(private trinoService: TrinoService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getTrinos();
   }
 
   getTrinos(): void {
-    this.trinos = this.trinoService.getTrinos();
+    this.trinoService.getTrinos()
+      .subscribe(trinos => this.trinos = trinos);
   }
+  
 }

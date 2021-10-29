@@ -7,11 +7,13 @@ import { TrinosComponent } from './trinos/trinos.component';
 
 //HTTP service
 import { HttpClientModule } from '@angular/common/http';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TrinosComponent
+    TrinosComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
