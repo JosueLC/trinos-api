@@ -49,6 +49,8 @@ def signup(
     """
     #Check if the user already exists
     users = dds.get_data_storage_dictionary_elements(["username"])
+    users = [user["username"] for user in users]
+
     if user.username in users:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

@@ -1,1 +1,13 @@
-{}
+{
+    "cfa31604-3213-4d45-add0-730659e08dce": {
+        "id": "cfa31604-3213-4d45-add0-730659e08dce",
+        "content": "Trino de prueba.",
+        "created_at": "2021-10-29 15:40:24.838963",
+        "updated_at": "2021-10-29 15:40:24.838972",
+        "by": {
+            "id": "419f2e5c-6dc7-4d9a-a1c5-06255e0656d3",
+            "username": "string",
+            "email": "user@example.com"
+        }
+    }
+}

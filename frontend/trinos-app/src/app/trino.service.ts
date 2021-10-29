@@ -13,7 +13,7 @@ import { MessageService } from './message.service';
 })
 export class TrinoService {
 
-  private trinosUrl = 'http://localhost:8000/api/v1/';
+  private trinosUrl = '/api/v1/';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

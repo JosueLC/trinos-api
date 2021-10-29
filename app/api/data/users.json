@@ -1,1 +1,11 @@
-{}
+{
+    "419f2e5c-6dc7-4d9a-a1c5-06255e0656d3": {
+        "id": "419f2e5c-6dc7-4d9a-a1c5-06255e0656d3",
+        "username": "josuelc",
+        "email": "user@example.com",
+        "password": "stringst",
+        "first_name": "string",
+        "last_name": "string",
+        "birth_date": "2021-10-29"
+    }
+}
