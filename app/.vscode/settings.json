@@ -1,3 +1,4 @@
 {
-    "python.defaultInterpreterPath": "../.venv/bin/python"
+    "python.defaultVirtualEnvironment": "../.venv/bin",
+    "python.defaultInterpreterPath": "../.venv/bin/python",
 }

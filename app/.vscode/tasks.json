@@ -6,12 +6,13 @@
         {
             "label": "pip_list",
             "type": "shell",
-            "command": "./.venv/bin/pip freeze > requirements.txt"
+            //"command": "./.venv/bin/pip freeze > requirements.txt"
+            "command": "${config:python.defaultVirtualEnvironment}/pip freeze > requirements.txt"
         },
         {
             "label": "pip_install",
             "type": "shell",
-            "command": "./.venv/bin/pip install -r requirements.txt"
+            "command": "${config:python.defaultVirtualEnvironment}/pip install -r requirements.txt"
         }
     ]
 }
