@@ -2,7 +2,11 @@
 export interface trino {
     id: string;
     content: string;
-    date: Date;
-    author: string;
-    authorId: string;
+    created_at:Date;
+    updated_at:Date;
+    by: {
+        id: string;
+        username: string;
+        email: string;
+    };
 }

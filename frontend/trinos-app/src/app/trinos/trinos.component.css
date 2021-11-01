@@ -1,0 +1,50 @@
+/* styles for elements in trinos component */
+app-trinos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.trino{
+    --primary-color: #6490ff62;
+    --secondary-color: #dc267e62;
+    --tertiary-color: #FFD16662;
+    --quaternary-color: #785EF062;
+    --quinary-color: #FE610062;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.trino-header{
+    background-color: var(--quaternary-color);
+    border-radius: 4px 4px 0 0;
+    padding: 20px;
+}
+.trino-author{
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+.trino-content{
+    padding: 20px;
+}
+.trino-content p{
+    font-size: 1.5rem;
+    color: var(--quaternary-color);
+}
+.trino-footer{
+    background-color: var(--quaternary-color);
+    border-radius: 0 0 4px 4px;
+    padding: 20px;
+    color: var(--secondary-color);
+}
+.trino-footer-left{
+    float: left;
+    font-size: 14px;
+}
+.trino-footer-right{
+    float: right;
+}
