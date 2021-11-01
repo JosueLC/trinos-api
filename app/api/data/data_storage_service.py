@@ -39,6 +39,13 @@ class DataStorageService():
     def get_data_storage_dictionary(self):
         return self.data_storage_dictionary
 
+    # get data_storage_dictionary as json list
+    def get_data_storage_dictionary_as_list(self) -> list:
+        data_storage_dictionary_json_list = []
+        for key in self.data_storage_dictionary:
+            data_storage_dictionary_json_list.append(self.data_storage_dictionary[key])
+        return data_storage_dictionary_json_list
+
 #return a list with the selected attributes from all elements in data_storage_dictionary
     def get_data_storage_dictionary_elements(self,attributes : list) -> list:
         data_storage_dictionary_elements = []

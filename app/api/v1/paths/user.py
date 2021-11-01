@@ -1,5 +1,5 @@
 #Python packages
-from typing import Dict
+from typing import List
 from uuid import UUID
 import json
 
@@ -123,7 +123,7 @@ def login(
 
 @router.get(
     path="/users",
-    response_model=Dict[str,User],
+    response_model=List[User],
     status_code=status.HTTP_200_OK,
     summary="Get all users",
     tags=["User"]
@@ -144,7 +144,7 @@ def get_users():
         - birth_date: User's birth date (date)'
 
     """
-    users = dds.get_data_storage_dictionary()
+    users = dds.get_data_storage_dictionary_as_list()
     return users
 
 @router.get(
