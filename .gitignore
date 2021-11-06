@@ -5,6 +5,10 @@
 __pycache__
 *.pyc
 
+#Project information
+.idea
+*.iml
+
 #Test information
 data/users.json
 data/trinos.json
