@@ -1,1 +1,29 @@
-
+<!-- <pre>{{trinos | json}}</pre> -->
+<!-- ngfor div for trino in trinos -->
+<div *ngFor="let trino of trinos">
+    <div class="trino">
+        <article class="trino-article"  >
+            <div class="trino-header">
+                <a href="#" class="trino-author">
+                    <span>{{trino.by.username}}</span>
+                </a>
+            </div>
+            <div class="trino-content">
+                <p>
+                    {{trino.content}}
+                </p>
+            </div>
+            <div class="trino-footer">
+                <div class="trino-footer-left">
+                    <span>{{trino.created_at | date:'medium'}}</span>
+                </div>
+                <!-- <div class="trino-footer-right">
+                    <span>{{trino.comments.length}}</span>
+                    <a href="#" class="trino-comment">
+                        <span>Comment</span>
+                    </a>
+                </div> -->
+            </div>
+        </article>
+    </div>
+</div>

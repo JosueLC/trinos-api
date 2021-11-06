@@ -15,12 +15,12 @@ from ...data.data_storage_service import DataStorageService
 router = APIRouter()
 
 dss = DataStorageService("trinos")
-users = DataStorageService("users").get_data_storage_dictionary_elements(["id"])
+dss_users = DataStorageService("users")
 
 #Path operations to home page
 @router.get(
     path="/",
-    response_model=Dict[str,Trino],
+    response_model=List[Trino],
     status_code=status.HTTP_200_OK,
     summary="Get all trinos",
     tags=["Home","Trino"]
@@ -43,7 +43,7 @@ def home():
         - updated_at: DateTime
         - by: UserBase (id, username, email)
     """
-    trinos = dss.data_storage_dictionary
+    trinos = dss.get_data_storage_dictionary_as_list()
     return trinos
 
 @router.get(
@@ -80,8 +80,7 @@ def post_trino(
     Dictionary with the trino.
     """
     #Check if the user exists
-    user_id = {"id": str(trino.by.id)}
-    if user_id not in users:
+    if dss_users.get_data_storage_dictionary_element(str(trino.by.id)) is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
         detail="User not found"
         )
