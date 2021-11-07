@@ -1,0 +1,14 @@
+{
+    "folders": [
+        {
+            //Python backend
+            "name": "backend",
+            "path": "app"
+        },
+        {
+            //Angular frontend
+            "name": "frontend",
+            "path": "frontend"
+        }
+    ]
+}
