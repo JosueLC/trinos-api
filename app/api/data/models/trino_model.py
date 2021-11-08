@@ -1,20 +1,20 @@
-#Tweet model
+#Trino model
 #-------------------------------------------------------
-# SQLAlchemy model for the Tweets table
+# SQLAlchemy model for the Trinos table
 #-------------------------------------------------------
-# Tweet table structure:
-#   id: unique id for each tweet : uuid
-#   text: text of the tweet
-#   user_id: id of the user who posted the tweet
-#   created_at: date and time of the tweet
+# Trino table structure:
+#   id: unique id for each Trino : uuid
+#   text: text of the Trino
+#   user_id: id of the user who posted the Trino
+#   created_at: date and time of the Trino
 #   updated_at: date and time of the last update
-#   likes: list of users who liked the tweet
-#   retweets: list of users who retweeted the tweet
-#   replies: list of users who replied to the tweet
-#   hashtags: list of hashtags used in the tweet
-#   urls: list of urls used in the tweet
-#   mentions: list of users mentioned in the tweet
-#   media: list of media used in the tweet
+#   likes: list of users who liked the Trino
+#   reTrinos: list of users who reTrinoed the Trino
+#   replies: list of users who replied to the Trino
+#   hashtags: list of hashtags used in the Trino
+#   urls: list of urls used in the Trino
+#   mentions: list of users mentioned in the Trino
+#   media: list of media used in the Trino
 #
 #   Relationships:
 #       Many-to-one relationship with the User table
@@ -29,8 +29,8 @@ from sqlalchemy.orm import relationship
 #Local packages
 from ..database import Base
 
-class Tweet(Base):
-    __tablename__ = 'tweets'
+class Trino(Base):
+    __tablename__ = 'Trinos'
     id = Column(String(36), primary_key=True, default=str(uuid4()))
     text = Column(String(280))
     user_id = Column(String(36), ForeignKey('users.id'))
@@ -40,7 +40,7 @@ class Tweet(Base):
     urls = Column(JSON)
     mentions = Column(JSON)
     media = Column(JSON)
-    likes = relationship('Like', back_populates='tweet')
-    retweets = relationship('Retweet', back_populates='tweet')
-    replies = relationship('Reply', back_populates='tweet')
+    likes = relationship('Like', back_populates='Trino')
+    retrinos = relationship('Retrino', back_populates='Trino')
+    replies = relationship('Reply', back_populates='Trino')
     

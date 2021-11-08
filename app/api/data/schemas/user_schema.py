@@ -5,7 +5,6 @@
 # Types of User Schemas:
 #   - UserBase
 #   - UserCreate
-#   - UserUpdate
 #   - UserRead
 #   - UserList
 #   - User
@@ -45,3 +44,6 @@ class User(UserRead):
     birth_date : datetime = Field(None, description="User's' birth date")
     is_admin : bool = Field(None, description="User's admin status")
     is_active : bool = Field(None, description="User's active status")
+
+    class Config:
+        orm_mode = True
